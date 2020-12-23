@@ -1,0 +1,30 @@
+name: Test plugin
+
+on:
+  pull_request:
+    paths-ignore:
+      - "**.md"
+  push:
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  plugin_test:
+    strategy:
+      fail-fast: false
+      matrix:
+        container:
+          - alpine:latest
+          - centos:latest
+          - ubuntu:latest
+
+    runs-on: ubuntu-latest
+
+    container:
+      image: ${{ matrix.container }}
+
+    steps:
+      - name: Test plugin
+        uses: asdf-vm/actions/plugin-test@v1
+        with:
+          command: my_tool --version
