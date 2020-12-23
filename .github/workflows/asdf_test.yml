@@ -9,22 +9,23 @@ on:
       - "**.md"
 
 jobs:
-  plugin_test:
+  build:
     strategy:
-      fail-fast: false
       matrix:
-        container:
-          - alpine:latest
-          - centos:latest
-          - ubuntu:latest
+        os: [ubuntu-latest, macOS-latest]
 
-    runs-on: ubuntu-latest
-
-    container:
-      image: ${{ matrix.container }}
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Test plugin
-        uses: asdf-vm/actions/plugin-test@v1
-        with:
-          command: my_tool --version
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: install asdf-vm
+        run: git clone https://github.com/asdf-vm/asdf.git $HOME/asdf
+
+      - name: install bats and run test
+        run: . $HOME/asdf/asdf.sh
+          asdf plugin add bats $GITHUB_WORKSPACE
+          asdf list all bats
+          asdf install bats latest
+          bats --version
