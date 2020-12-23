@@ -4,7 +4,7 @@ set -e
 set -o pipefail
 
 GITHUB_API_HOST=${GITHUB_API_HOST:-"https://api.github.com"}
-releases_api_url="$GITHUB_API_HOST/repos/sstephenson/bats/tags"
+releases_api_url="$GITHUB_API_HOST/repos/bats-core/bats-core/tags"
 
 function sort_versions() {
   sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' | \

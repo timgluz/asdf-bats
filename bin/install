@@ -13,7 +13,7 @@ fail() {
 download_version() {
   local version=$1
   local download_path="/tmp/bats_$RANDOM"
-  local repo_url="https://github.com/sstephenson/bats.git"
+  local repo_url="https://github.com/bats-core/bats-core.git"
 
   git clone --depth=1 -b "$version" "$repo_url" "$download_path"
 
@@ -21,15 +21,11 @@ download_version() {
 }
 
 install_bats() {
-  local install_type=$1
+  #local install_type=$1
   local version=${2:-"master"}
   local install_path=$3
   local work_dir
   work_dir="$(pwd)"
-
-  if [ "$install_type" != "version" ]; then
-    echo "asdf-bats supports release installs only"
-  fi
 
   echo "* Downloading Bats $version"
   local download_path
