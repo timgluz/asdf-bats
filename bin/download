@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+fail() {
+  echo -e "\e[31mFail:\e[m $*"
+  exit 1
+}
+
+# downloads repo to temporary folder
+# return fullpath to temporary folder
+download_bats() {
+  local version=${1:-"master"}
+  local download_path=${2:-"/tmp/bats"}
+  local temp_path="/tmp/bats_$RANDOM"
+  local repo_url="https://github.com/bats-core/bats-core.git"
+
+  (
+    echo "* Downloading Bats-core( $version ) to $download_path" > /dev/null
+    git clone --depth=1 -b "$version" "$repo_url" "$temp_path"
+    cp -r "$temp_path" "$download_path"
+
+    echo "$download_path"
+  ) || (
+    rm -rf "$download_path"
+    fail "An error occured during download"
+  )
+}
+
+download_bats "$ASDF_INSTALL_VERSION" "$ASDF_DOWNLOAD_PATH"
