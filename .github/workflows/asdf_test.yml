@@ -1,0 +1,31 @@
+name: Test plugin
+
+on:
+  pull_request:
+    paths-ignore:
+      - "**.md"
+  push:
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: install asdf-vm
+        run: git clone https://github.com/asdf-vm/asdf.git $HOME/asdf
+
+      - name: install bats and run test
+        run: . $HOME/asdf/asdf.sh
+          asdf plugin add bats $GITHUB_WORKSPACE
+          asdf list all bats
+          asdf install bats latest
+          bats --version
