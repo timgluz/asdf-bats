@@ -1,0 +1,53 @@
+#!/usr/bin/env  bash
+
+set -e
+set -o pipefail
+
+fail() {
+  echo -e "\e[31mFail:\e[m $*"
+  exit 1
+}
+
+# downloads repo to temporary folder
+# return fullpath to temporary folder
+download_version() {
+  local version=$1
+  local download_path="/tmp/bats_$RANDOM"
+  local repo_url="https://github.com/sstephenson/bats.git"
+
+  git clone --depth=1 -b "$version" "$repo_url" "$download_path"
+
+  echo "$download_path"
+}
+
+install_bats() {
+  local install_type=$1
+  local version=${2:-"master"}
+  local install_path=$3
+  local work_dir
+  work_dir="$(pwd)"
+
+  if [ "$install_type" != "version" ]; then
+    echo "asdf-bats supports release installs only"
+  fi
+
+  echo "* Downloading Bats $version"
+  local download_path
+  download_path=$(download_version "$version")
+  echo "* Bats temporary downloaded to $download_path"
+
+  echo "* Installing Bats..."
+  (
+    cd "$download_path"
+    #chmod u+x install.sh
+    bash install.sh "$install_path"
+    rm -rf "$download_path"
+    cd "$work_dir"
+  ) || (
+    rm -rf "$install_path"
+    fail "An error occured"
+  )
+}
+
+
+install_bats "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
