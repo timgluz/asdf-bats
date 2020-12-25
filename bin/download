@@ -17,14 +17,15 @@ download_bats() {
   local repo_url="https://github.com/bats-core/bats-core.git"
 
   (
-    echo "* Downloading Bats-core( $version ) to $download_path" > /dev/null
-    git clone --depth=1 -b "$version" "$repo_url" "$temp_path"
-    cp -r "$temp_path" "$download_path"
+    echo "* Downloading Bats-core(version:$version) to $download_path"
+    git clone --depth=1 -b "$version" "$repo_url" "$temp_path" > /dev/null
+    mv "$temp_path" "$download_path"
 
-    echo "$download_path"
+    echo "Download done."
+    return 0
   ) || (
-    rm -rf "$download_path"
-    fail "An error occured during download"
+    rm -rf "$temp_path"
+    fail "An error occured during download - check if $version is correct"
   )
 }
 

@@ -10,20 +10,24 @@ fail() {
 
 # expects that asdf calls bin/download first
 install_bats() {
-  local install_path=$1
+  local install_path=${1:-"/tmp/bats_install_$RANDOM"}
   local download_path=${2:-"/tmp/bats"}
+
+  [[ -d "$download_path" ]] || fail "$download_path does not exists"
 
   local work_dir
   work_dir="$(pwd)"
 
-  echo "* Looking Bats from $download_path"
-
   (
     cd "$download_path"
     echo "* Installing Bats to $install_path"
-    bash install.sh "$install_path"
-    rm -rf "$download_path"
+    mkdir -p "$install_path"
+
+    ./install.sh "$install_path"
+
     cd "$work_dir"
+    echo "* successfully installed to $install_path"
+    return 0
   ) || (
     rm -rf "$install_path"
     fail "An error occured during installation"
