@@ -1,5 +1,6 @@
 # asdf-bats
-ASDF plugin for BATS bash unittest library
+
+[ASDF](https://asdf-vm.com/#/core-manage-asdf) plugin for the [BATS](https://github.com/bats-core/bats-core/), a unittest library for the Bash/Zsh;
 
 ### Install
 
@@ -11,5 +12,30 @@ asdf install bats latest
 bats --version
 ```
 
+### Contributing
 
+* Open Github issue, describe the issue and proposed solution;
+It helps others to see your progress and will avoid duplicated effort;
+
+* Clone repo
+
+* Apply Changes
+
+* Test
+
+```
+# if you want to run it on docker
+make run
+
+export PLUGIN_URL="https://github.com/timgluz/asdf-bats.git"
+
+# testing specific Github ref - good for reporting a bug
+export PLUGIN_GITREF="5dce6968ce77db4ed220d815a99ccd501f82c383"
+asdf plugin test bats $PLUGIN_URL --asdf-plugin-gitref $PLUGIN_GITREF bats --version
+
+# testing a spec version, branch
+
+export PLUGIN_VERSION="master"
+asdf plugin test bats $PLUGIN_URL --asdf-tool-version $PLUGIN_VERSION bats --version
+```
 
