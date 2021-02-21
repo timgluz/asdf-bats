@@ -1,0 +1,16 @@
+# Docker image to test and debug BATS plugin with zsh
+
+FROM ubuntu:20.04
+
+RUN apt update \
+  && apt upgrade -y \
+  && apt install git zsh curl -y \
+  && chsh -s /usr/bin/zsh \
+  && git clone https://github.com/asdf-vm/asdf.git /root/.asdf --branch v0.8.0 \
+  && touch /root/.zshrc \
+  && echo ". /root/.asdf/asdf.sh" >> /root/.zshrc
+
+# add script to download Bats plugin
+COPY bin/ /root/.asdf/plugins/bats/bin/
+COPY install_bats.sh /root/bin/
+

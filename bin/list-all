@@ -22,13 +22,24 @@ function fetch_versions() {
 
   local versions
   versions=$(eval "$cmd")
-  versions=$(echo "$versions" | grep -oE "name\": \".{1,15}\"," | sed 's/name\": \"//;s/\",//' | sort_versions)
 
+  versions=$(echo "$versions" | grep -oE "name\": \".{1,15}\"," | sed 's/name\": \"//;s/\",//')
+  versions=$(echo "$versions" | sort_versions)
   echo "$versions"
+}
+
+function join() {
+  local res=""
+
+  while read -r line; do
+    res="${res} ${line}"
+  done
+
+  echo "$res"
 }
 
 # We're purposefully sorting each list individually instead of the global list because one of the version
 # the old list is returning is "alpha" and we want that version to appear before the newer versions
-all_tags=$(fetch_versions "$releases_api_url")
+all_tags=$(fetch_versions "$releases_api_url" | join)
 
 echo "${all_tags[@]}"
