@@ -29,3 +29,4 @@ jobs:
           asdf list all bats
           asdf install bats latest
           bats --version
+          bats test/

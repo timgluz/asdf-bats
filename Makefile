@@ -1,6 +1,9 @@
 build:
 	docker build -t asdf-bats:latest .
 
+test:
+	bats tests/
+
 clean-alpine:
 	docker rmi asdf-bats
 

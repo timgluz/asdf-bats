@@ -14,14 +14,20 @@ bats --version
 
 ### Contributing
 
-* Open Github issue, describe the issue and proposed solution;
+* Open Github issue, describe the issue and propose a solution;
 It helps others to see your progress and will avoid duplicated effort;
 
 * Clone repo
 
 * Apply Changes
 
-* Test
+* Test - make test
+
+Test are written using [Bats]() - you can use this plugin to install it or use `npm install -g bats`
+
+running all the test: `bats tests/`
+running a single file: `./list-all.sh`
+
 
 ```
 # if you want to run it on docker
