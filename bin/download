@@ -3,30 +3,45 @@
 set -e
 set -o pipefail
 
+export LATEST_BATS_VERSION="v1.2.0"
+export DEFAULT_BATS_REPO="https://github.com/bats-core/bats-core.git"
+
 fail() {
   echo -e "\e[31mFail:\e[m $*"
   exit 1
 }
 
-# downloads repo to temporary folder
 # return fullpath to temporary folder
 download_bats() {
-  local version=${1:-"master"}
-  local download_path=${2:-"/tmp/bats"}
-  local temp_path="/tmp/bats_$RANDOM"
-  local repo_url="https://github.com/bats-core/bats-core.git"
+  local version=$1
+  local download_path=$2
+  local repo_url=$3
 
   (
     echo "* Downloading Bats-core(version:$version) to $download_path"
-    git clone --depth=1 -b "$version" "$repo_url" "$temp_path" > /dev/null
-    mv "$temp_path" "$download_path"
+    git clone --depth=1 -b "$version" "$repo_url" "$download_path" > /dev/null
 
-    echo "Download done."
+    echo "Download successful."
     return 0
   ) || (
-    rm -rf "$temp_path"
-    fail "An error occured during download - check if $version is correct"
+    fail "An error occured during download - check if $version exists"
   )
 }
 
-download_bats "$ASDF_INSTALL_VERSION" "$ASDF_DOWNLOAD_PATH"
+version=${1:-"$ASDF_INSTALL_VERSION"}
+if [[ -z "$version" ]] ; then
+  fail "Version is missing - specify 1st param or set \$ASDF_INSTALL_VERSION"
+fi
+
+download_path=${2:-"$ASDF_DOWNLOAD_PATH"}
+if [[ -z "$download_path" ]] ; then
+  fail "Download path is missing - specify 2nd param or set \$ASDF_DOWNLOAD_PATH"
+fi
+
+repo_url=${3:-"$DEFAULT_BATS_REPO"}
+if [[ -z "$repo_url" ]] ; then
+  fail "repo_url is missing - specify 3rd param"
+fi
+
+echo "Preparing downloading $version from $repo_url"
+download_bats "$version" "$download_path" "$repo_url"
