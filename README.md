@@ -8,7 +8,7 @@
 asdf plugin-add bats https://github.com/timgluz/asdf-bats.git
 
 asdf list all bats
-asdf install bats latest
+asdf install bats v1.2.1
 bats --version
 ```
 
@@ -23,7 +23,7 @@ It helps others to see your progress and will avoid duplicated effort;
 
 * Test - make test
 
-Test are written using [Bats]() - you can use this plugin to install it or use `npm install -g bats`
+Test are written using [Bats](https://github.com/bats-core/bats-core) - you can use this plugin, use Docker or use `npm install -g bats`
 
 running all the test: `bats tests/`
 running a single file: `./list-all.sh`
@@ -44,4 +44,30 @@ asdf plugin test bats $PLUGIN_URL --asdf-plugin-gitref $PLUGIN_GITREF bats --ver
 export PLUGIN_VERSION="master"
 asdf plugin test bats $PLUGIN_URL --asdf-tool-version $PLUGIN_VERSION bats --version
 ```
+### Testing on Ubuntu
 
+`Dockerfile.ubuntu_zsh` builds a docker image where the`asdf`is already preinstalled
+and source-code of plugin copied to the asdf's plugin folder;
+
+Example usage:
+
+```
+make build-ubuntu
+make run-ubuntu
+
+# check current version of asdf
+asdf version
+
+# check currently installed plugins
+asdf list
+
+# check available versions
+asdf list all bats
+
+# install Bats
+asdf install bats v1.2.1
+
+bats --version
+exit
+make clean-ubuntu
+```
