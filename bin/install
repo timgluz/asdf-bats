@@ -3,6 +3,8 @@
 set -e
 set -o pipefail
 
+export DEFAULT_DOWNLOAD_PATH="/tmp/bats"
+
 fail() {
   echo -e "\e[31mFail:\e[m $*"
   exit 1
@@ -10,11 +12,8 @@ fail() {
 
 # expects that asdf calls bin/download first
 install_bats() {
-  local install_path=${1:-"/tmp/bats_install_$RANDOM"}
-  local download_path=${2:-"/tmp/bats"}
-
-  [[ -d "$download_path" ]] || fail "$download_path does not exists"
-
+  local install_path=$1
+  local download_path=$2
   local work_dir
   work_dir="$(pwd)"
 
@@ -23,15 +22,28 @@ install_bats() {
     echo "* Installing Bats to $install_path"
     mkdir -p "$install_path"
 
+    # install script from Bats-Code repo
     ./install.sh "$install_path"
 
     cd "$work_dir"
     echo "* successfully installed to $install_path"
     return 0
   ) || (
+    echo "Failure - going to clean up install folder"
     rm -rf "$install_path"
     fail "An error occured during installation"
   )
 }
 
-install_bats "$ASDF_INSTALL_PATH" "$ASDF_DOWNLOAD_PATH"
+install_path=${1:-"$ASDF_INSTALL_PATH"}
+if [[ -z "$install_path" ]]; then
+  fail "Install path is unspecified - add 1st argument or set \$ASDF_INSTALL_PATH"
+fi
+
+download_path=${2:-"$ASDF_DOWNLOAD_PATH"}
+if [[ -z "$download_path" ]]; then
+  fail "Download path is unspecified - add 2nd argument or set \$ASDF_DOWNLOAD_PATH"
+fi
+
+
+install_bats "$install_path" "$download_path"
