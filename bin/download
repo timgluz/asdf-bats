@@ -19,7 +19,7 @@ download_bats() {
 
   (
     echo "* Downloading Bats-core(version:$version) to $download_path"
-    git clone --depth=1 -b "$version" "$repo_url" "$download_path" > /dev/null
+    git clone --depth=1 -b "v$version" "$repo_url" "$download_path" >/dev/null
 
     echo "Download successful."
     return 0
