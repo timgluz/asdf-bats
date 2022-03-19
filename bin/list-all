@@ -11,6 +11,10 @@ function sort_versions() {
     LC_ALL=C sort -i -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
 }
 
+function remove_leading_vs() {
+  sed 's/^v\(.*\)/\1/'
+}
+
 function fetch_versions() {
   releases_path=$1
   cmd='curl -s  -H "Accept: application/vnd.github.v3+json"'
@@ -23,7 +27,8 @@ function fetch_versions() {
   local versions
   versions=$(eval "$cmd")
 
-  versions=$(echo "$versions" | grep -oE "name\": \".{1,15}\"," | sed 's/name\": \"//;s/\",//')
+  versions=$(echo "$versions" | grep -oE 'name": ".{1,15}",' | sed 's/name\": \"//;s/\",//')
+  versions=$(echo "$versions" | remove_leading_vs)
   versions=$(echo "$versions" | sort_versions)
   echo "$versions"
 }
