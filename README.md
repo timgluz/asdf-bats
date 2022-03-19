@@ -8,7 +8,7 @@
 asdf plugin-add bats https://github.com/timgluz/asdf-bats.git
 
 asdf list all bats
-asdf install bats v1.2.1
+asdf install bats 1.6.0
 bats --version
 ```
 
