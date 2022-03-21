@@ -17,6 +17,8 @@ download_bats() {
   local download_path=$2
   local repo_url=$3
 
+  version=$(echo "$version" | sed 's/^v\(.*\)/\1/')
+
   (
     echo "* Downloading Bats-core(version:$version) to $download_path"
     git clone --depth=1 -b "v$version" "$repo_url" "$download_path" >/dev/null
@@ -29,17 +31,17 @@ download_bats() {
 }
 
 version=${1:-"$ASDF_INSTALL_VERSION"}
-if [[ -z "$version" ]] ; then
+if [[ -z "$version" ]]; then
   fail "Version is missing - specify 1st param or set \$ASDF_INSTALL_VERSION"
 fi
 
 download_path=${2:-"$ASDF_DOWNLOAD_PATH"}
-if [[ -z "$download_path" ]] ; then
+if [[ -z "$download_path" ]]; then
   fail "Download path is missing - specify 2nd param or set \$ASDF_DOWNLOAD_PATH"
 fi
 
 repo_url=${3:-"$DEFAULT_BATS_REPO"}
-if [[ -z "$repo_url" ]] ; then
+if [[ -z "$repo_url" ]]; then
   fail "repo_url is missing - specify 3rd param"
 fi
 
