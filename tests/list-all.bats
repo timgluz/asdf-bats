@@ -17,11 +17,11 @@ main() {
 
   # check versions
   echo "$output"
-  [[ "$output" =~ "v0.1.0" ]]
-  [[ "$output" =~ "v0.2.0" ]]
+  [[ "$output" =~ "0.1.0" ]]
+  [[ "$output" =~ "0.2.0" ]]
 
   # check that versions are on same line
-  [[ "$output" =~ "v0.1.0 v0.2.0" ]]
+  [[ "$output" =~ "0.1.0 0.2.0" ]]
 }
 
 @test 'success if called with param' {
