@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 setup() {
-  export bin_path=$(readlink -e "$BATS_TEST_DIRNAME/../bin")
+  export bin_path=$(python -c "import os,sys; print(os.path.realpath(os.path.expanduser(sys.argv[1])))" "$BATS_TEST_DIRNAME/../bin")
   export cmd="list-all"
 }
 
