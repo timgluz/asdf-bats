@@ -3,7 +3,6 @@
 set -e
 set -o pipefail
 
-export LATEST_BATS_VERSION="v1.2.0"
 export DEFAULT_BATS_REPO="https://github.com/bats-core/bats-core.git"
 
 fail() {

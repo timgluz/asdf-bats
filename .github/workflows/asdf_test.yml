@@ -29,5 +29,6 @@ jobs:
           asdf plugin add bats $GITHUB_WORKSPACE
           asdf list all bats
           asdf install bats latest
+          asdf global bats latest
           bats --version
           bats test/
