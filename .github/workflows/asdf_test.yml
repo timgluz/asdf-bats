@@ -31,4 +31,4 @@ jobs:
           asdf install bats latest
           asdf global bats latest
           bats --version
-          bats test/
+          bats tests/
