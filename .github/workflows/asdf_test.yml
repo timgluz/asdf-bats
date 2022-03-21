@@ -24,7 +24,8 @@ jobs:
         run: git clone https://github.com/asdf-vm/asdf.git $HOME/asdf
 
       - name: install bats and run test
-        run: . $HOME/asdf/asdf.sh
+        run: |
+          . $HOME/asdf/asdf.sh
           asdf plugin add bats $GITHUB_WORKSPACE
           asdf list all bats
           asdf install bats latest
