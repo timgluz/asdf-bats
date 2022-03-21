@@ -2,7 +2,7 @@
 
 setup() {
   export bin_path
-  bin_path=$(readlink -e "$BATS_TEST_DIRNAME/../bin")
+  bin_path=$(python -c "import os,sys; print(os.path.realpath(os.path.expanduser(sys.argv[1])))" "$BATS_TEST_DIRNAME/../bin")
   export cmd="download"
   export test_version="v1.2.0"
 

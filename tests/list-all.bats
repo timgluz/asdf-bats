@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 setup() {
-  export bin_path=$(readlink -e "$BATS_TEST_DIRNAME/../bin")
+  export bin_path=$(python -c "import os,sys; print(os.path.realpath(os.path.expanduser(sys.argv[1])))" "$BATS_TEST_DIRNAME/../bin")
   export cmd="list-all"
 }
 
@@ -17,11 +17,11 @@ main() {
 
   # check versions
   echo "$output"
-  [[ "$output" =~ "v0.1.0" ]]
-  [[ "$output" =~ "v0.2.0" ]]
+  [[ "$output" =~ "0.1.0" ]]
+  [[ "$output" =~ "0.2.0" ]]
 
   # check that versions are on same line
-  [[ "$output" =~ "v0.1.0 v0.2.0" ]]
+  [[ "$output" =~ "0.1.0 0.2.0" ]]
 }
 
 @test 'success if called with param' {
